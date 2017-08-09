@@ -1,0 +1,17 @@
+.post {
+    &__wrapper {
+        padding: 1em 0;
+    }
+
+    &__title {
+        color: #000000;
+        font-size: .85em;
+        text-decoration: none;
+    }
+
+    &__subreddit {
+        color: #8493a3;
+        padding-left: 10px;
+        font-size: .6em;
+    }
+}

@@ -1,0 +1,52 @@
+.easy-reader {
+    &__wrapper {
+        padding-top: 3em;
+        height: calc(100vh - 3em);
+        overflow-x: hidden;
+        width: 100vw;
+    }
+
+    &__global-heading {
+        font-weight: 600;
+        margin: 0;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    &__nav-container {
+        display: flex;
+        justify-content: space-around;
+        list-style: none;
+    }
+
+    &__nav {
+        font-size: .95em;
+        letter-spacing: .5px;
+        text-transform: uppercase;
+        transition:all 0.3s ease;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &.active {
+            font-weight: 600;
+            transform: scale(1.1);
+        }
+    }
+
+    &__post-wrapper {
+        background-color: #f1f1f1;
+    }
+
+    &__post-container {
+        margin: 3em auto 0;
+        max-width: 1020px;
+        padding: 1em 0;
+    }
+
+    &__end-text {
+        font-size: .8em;
+        text-align: center;
+    }
+}
