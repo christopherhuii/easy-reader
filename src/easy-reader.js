@@ -15,7 +15,6 @@ class EasyReader extends Component {
 
     checkScrollPosition = debounce(() => {
         const scrollToTopButton = window.document.querySelector('.easy-reader__scroll-top-container');
-        console.log(window.document.body.scrollTop);
         if (window.document.body.scrollTop > 200) {
             scrollToTopButton.classList.add('active');
         } else {
