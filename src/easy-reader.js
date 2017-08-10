@@ -1,14 +1,27 @@
 // @flow
 
-import React, {Component} from 'react';
 import 'whatwg-fetch'
+import React, {Component} from 'react';
+import debounce from 'lodash.debounce';
+
 import './easy-reader.css';
 import RedditPost from './js/reddit-post.js';
+
 class EasyReader extends Component {
     state = {
         activeTab: '',
         posts: []
     };
+
+    checkScrollPosition = debounce(() => {
+        const scrollToTopButton = window.document.querySelector('.easy-reader__scroll-top-container');
+        console.log(window.document.body.scrollTop);
+        if (window.document.body.scrollTop > 200) {
+            scrollToTopButton.classList.add('active');
+        } else {
+            scrollToTopButton.classList.remove('active');
+        }
+    }, 150);
 
     getPostTypes = () => {
         return {
@@ -38,14 +51,30 @@ class EasyReader extends Component {
             }
         })
     }
+
+    scrollToTop = () => {
+        let int = setInterval(() => {
+            window.scrollBy(0, -30);
+            if (window.document.body.scrollTop === 0) {
+                clearInterval(int);
+            }
+        }, 10);
+    }
+
     componentDidMount() {
         this.fetchPosts('reddit');
+        window.addEventListener('scroll', this.checkScrollPosition);
     }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.checkScrollPosition);
+    }
+
 
     render() {
         const {activeTab, posts} = this.state;
         return (
-            <div className="easy-reader__wrapper">
+            <div className="easy-reader__wrapper" id="easy-reader">
                 <h1 className="easy-reader__global-heading">easy reader</h1>
                 <ul className="easy-reader__nav-container">
                     <li className={`easy-reader__nav ${'reddit' === activeTab ? 'active' : ''}`} onClick={() => this.fetchPosts('reddit')}>reddit</li>
@@ -61,6 +90,9 @@ class EasyReader extends Component {
                         ): null}
                     </div>
                 </div>
+                <a className="easy-reader__scroll-top-container" onClick={this.scrollToTop}>
+                    <img alt="scroll-to-top-button" className="easy-reader__scroll-top" src="./arrow-up.png" />
+                </a>
             </div>
         );
     }

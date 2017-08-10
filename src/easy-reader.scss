@@ -1,9 +1,6 @@
 .easy-reader {
     &__wrapper {
         padding-top: 3em;
-        height: calc(100vh - 3em);
-        overflow-x: hidden;
-        width: 100vw;
     }
 
     &__global-heading {
@@ -22,6 +19,7 @@
     &__nav {
         font-size: .95em;
         letter-spacing: .5px;
+        position: relative;
         text-transform: uppercase;
         transition:all 0.3s ease;
 
@@ -32,11 +30,29 @@
         &.active {
             font-weight: 600;
             transform: scale(1.1);
+
+            &::after {
+                transform: translate(-50%, -148%);
+            }
+        }
+
+        &::after {
+            border-bottom: 10px solid #f1f1f1;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            content: '';
+            height: 0;
+            left: 50%;
+            position: absolute;
+            top: calc(110% + 3em);
+            transition:all 0.3s ease;
+            width: 0;
         }
     }
 
     &__post-wrapper {
         background-color: #f1f1f1;
+        padding: 0 1.5em;
     }
 
     &__post-container {
@@ -48,5 +64,24 @@
     &__end-text {
         font-size: .8em;
         text-align: center;
+    }
+
+    &__scroll-top-container {
+        bottom: 50px;
+        display: none;
+        position: fixed;
+        right: 50px;
+
+        &.active {
+            display: block;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &__scroll-top {
+        width: 35px;
     }
 }
