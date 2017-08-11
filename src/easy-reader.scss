@@ -53,12 +53,28 @@
     &__post-wrapper {
         background-color: #f1f1f1;
         padding: 0 1.5em;
+        position: relative;
     }
 
     &__post-container {
         margin: 3em auto 0;
         max-width: 1020px;
         padding: 1em 0;
+    }
+
+    &__loader {
+        background-color: rgba(255,255,255,0.8);
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        .loader {
+            left: calc(50% - 5em);
+            position: fixed;
+            top: calc(50% - 5em);
+        }
     }
 
     &__end-text {

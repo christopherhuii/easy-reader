@@ -5,12 +5,14 @@ import React, {Component} from 'react';
 import debounce from 'lodash.debounce';
 
 import './easy-reader.css';
+import Loader from './js/loader.js';
 import RedditPost from './js/reddit-post.js';
 import HackerNewsPost from './js/hn-post.js';
 
 class EasyReader extends Component {
     state = {
         activeTab: '',
+        isFetchInProgress: false,
         posts: []
     };
 
@@ -25,46 +27,56 @@ class EasyReader extends Component {
 
     fetchHackerNewsPosts = () => {
         // Only taking first 25 (for now...)
-        fetch('https://hacker-news.firebaseio.com/v0/topstories.json', {
-            method: 'GET'
-        }).then((response) => {
-            return response.json();
-        }).then((data) => {
-            return new Promise((resolve, reject) => {
-                let posts = [];
+        this.setState({
+            isFetchInProgress: true
+        }, () => {
+            fetch('https://hacker-news.firebaseio.com/v0/topstories.json', {
+                method: 'GET'
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                return new Promise((resolve, reject) => {
+                    let posts = [];
 
-                data.slice(0, 25).forEach((postId) => {
-                    fetch(`https://hacker-news.firebaseio.com/v0/item/${postId}.json`, {
-                        method: 'GET',
-                    }).then((response) => {
-                        return response.json();
-                    }).then((data) => {
-                        posts.push(data);
+                    data.slice(0, 25).forEach((postId) => {
+                        fetch(`https://hacker-news.firebaseio.com/v0/item/${postId}.json`, {
+                            method: 'GET',
+                        }).then((response) => {
+                            return response.json();
+                        }).then((data) => {
+                            posts.push(data);
 
-                        if (posts.length === 25) {
-                            resolve(posts);
-                        }
+                            if (posts.length === 25) {
+                                resolve(posts);
+                            }
+                        });
                     });
-                });
 
-            }).then((posts) => {
-                this.setState({
-                    activeTab: 'hacker-news',
-                    posts
+                }).then((posts) => {
+                    this.setState({
+                        activeTab: 'hacker-news',
+                        isFetchInProgress: false,
+                        posts
+                    });
                 });
             });
         });
     }
 
     fetchRedditPosts = () => {
-        fetch('https://www.reddit.com/.json', {
-            method: 'GET',
-        }).then((response) => {
-            return response.json();
-        }).then((data) => {
-            this.setState({
-                activeTab: 'reddit',
-                posts: data.data.children
+        this.setState({
+            isFetchInProgress: true
+        }, () => {
+            fetch('https://www.reddit.com/.json', {
+                method: 'GET',
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                this.setState({
+                    activeTab: 'reddit',
+                    isFetchInProgress: false,
+                    posts: data.data.children
+                });
             });
         });
     }
@@ -101,7 +113,7 @@ class EasyReader extends Component {
     }
 
     render() {
-        const {activeTab, posts} = this.state;
+        const {activeTab, isFetchInProgress, posts} = this.state;
         return (
             <div className="easy-reader__wrapper" id="easy-reader">
                 <h1 className="easy-reader__global-heading">easy reader</h1>
@@ -118,6 +130,11 @@ class EasyReader extends Component {
                             <p className="easy-reader__end-text">the end :)</p>
                         ): null}
                     </div>
+                    {isFetchInProgress ? (
+                        <div className="easy-reader__loader">
+                            <Loader />
+                        </div>
+                    ) : null}
                 </div>
                 <a className="easy-reader__scroll-top-container" onClick={this.scrollToTop}>
                     <img alt="scroll-to-top-button" className="easy-reader__scroll-top" src="./arrow-up.png" />
