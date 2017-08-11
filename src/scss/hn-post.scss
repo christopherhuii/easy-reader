@@ -1,0 +1,16 @@
+.hn {
+
+    &__post {
+        padding: .5em 0;
+    }
+
+    &__title {
+        display: block;
+        font-size: .85em;
+        line-height: .85em;
+    }
+
+    &__info {
+        font-size: .6em;
+    }
+}
