@@ -1,0 +1,17 @@
+.giphy {
+    &__post {
+        display: inline-block;
+        transition: all .3s ease;
+        -webkit-backface-visibility: hidden;
+
+        img {
+            /* Just in case there are inline attributes */
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}

@@ -8,6 +8,7 @@ import './easy-reader.css';
 import Loader from './js/loader.js';
 import RedditPost from './js/reddit-post.js';
 import HackerNewsPost from './js/hn-post.js';
+import GiphyPost from './js/giphy-post.js';
 
 class EasyReader extends Component {
     state = {
@@ -63,6 +64,25 @@ class EasyReader extends Component {
         });
     }
 
+    fetchGiphyPosts = () => {
+        this.setState({
+            isFetchInProgress: true
+        }, () => {
+            fetch(`https://api.giphy.com/v1/gifs/trending?api_key=${process.env.REACT_APP_GIPHY}&limit=100`, {
+                method: 'GET'
+            }). then((response) => {
+                return response.json();
+            }).then((data) => {
+                this.setState({
+                    activeTab: 'giphy',
+                    isFetchInProgress: false,
+                    posts: data.data
+                });
+            });
+        })
+    }
+
+
     fetchRedditPosts = () => {
         this.setState({
             isFetchInProgress: true
@@ -88,6 +108,8 @@ class EasyReader extends Component {
                     return <RedditPost post={post} key={post.data.id}/>
                 case 'hacker-news':
                     return <HackerNewsPost post={post} key ={post.id} />
+                case 'giphy':
+                    return <GiphyPost post={post} key={post.id} />
                 default:
                     return <h1>Error</h1>
             }
@@ -114,6 +136,7 @@ class EasyReader extends Component {
 
     render() {
         const {activeTab, isFetchInProgress, posts} = this.state;
+        const postTypeClass = this.state.activeTab === 'giphy' ? 'giphy' : '';
         return (
             <div className="easy-reader__wrapper" id="easy-reader">
                 <h1 className="easy-reader__global-heading">easy reader</h1>
@@ -121,10 +144,11 @@ class EasyReader extends Component {
                     <li className={`easy-reader__nav ${'reddit' === activeTab ? 'active' : ''}`} onClick={this.fetchRedditPosts}>reddit</li>
                     <li className={`easy-reader__nav ${'medium' === activeTab ? 'active' : ''}`} onClick={() => this.fetchPosts('medium')}>medium</li>
                     <li className={`easy-reader__nav ${'hacker-news' === activeTab ? 'active' : ''}`} onClick={this.fetchHackerNewsPosts}>hacker news</li>
+                    <li className={`easy-reader__nav ${'giphy' === activeTab ? 'active' : ''}`} onClick={this.fetchGiphyPosts}>giphy</li>
                     <li className={`easy-reader__nav ${'lifehacker' === activeTab ? 'active' : ''}`} onClick={this.fetchHackerNewsPosts}>lifehacker</li>
                 </ul>
                 <div className="easy-reader__post-wrapper">
-                    <div className="easy-reader__post-container">
+                    <div className={`easy-reader__post-container ${postTypeClass}`}>
                         {this.renderPosts()}
                         {posts.length > 1 ? (
                             <p className="easy-reader__end-text">the end :)</p>

@@ -60,6 +60,18 @@
         margin: 3em auto 0;
         max-width: 1020px;
         padding: 1em 0;
+
+        &.giphy {
+            line-height: 5;
+
+            -webkit-column-count: 5;
+            -webkit-column-gap:   0px;
+            -moz-column-count:    5;
+            -moz-column-gap:      0px;
+            column-count:         5;
+            column-gap:           20px;
+            padding: 2em 0;
+        }
     }
 
     &__loader {

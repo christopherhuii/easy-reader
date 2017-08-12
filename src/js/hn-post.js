@@ -1,7 +1,7 @@
 import React from 'react';
 import './../scss/hn-post.css';
 
-export default function HackerNews({post}) {
+export default function HackerNewsPost({post}) {
 
     return (
         <div className="hn__post">
