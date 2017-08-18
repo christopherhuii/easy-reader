@@ -9,6 +9,7 @@ import Loader from './js/loader.js';
 import RedditPost from './js/reddit-post.js';
 import HackerNewsPost from './js/hn-post.js';
 import GiphyPost from './js/giphy-post.js';
+import MediumPost from './js/medium-post.js';
 
 class EasyReader extends Component {
     state = {
@@ -70,7 +71,7 @@ class EasyReader extends Component {
         }, () => {
             fetch(`https://api.giphy.com/v1/gifs/trending?api_key=${process.env.REACT_APP_GIPHY}&limit=100`, {
                 method: 'GET'
-            }). then((response) => {
+            }).then((response) => {
                 return response.json();
             }).then((data) => {
                 this.setState({
@@ -79,9 +80,27 @@ class EasyReader extends Component {
                     posts: data.data
                 });
             });
-        })
+        });
     }
 
+    fetchMediumPosts = () => {
+        // Using RSS to JSON because Medium API doesn't support GET and scraping violates ToS
+        this.setState({
+            isFetchInProgress: true
+        }, () => {
+            fetch('https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/topic/popular', {
+                method: 'GET'
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                this.setState({
+                    activeTab: 'medium',
+                    isFetchInProgress: false,
+                    posts: data.items
+                });
+            });
+        });
+    }
 
     fetchRedditPosts = () => {
         this.setState({
@@ -110,6 +129,8 @@ class EasyReader extends Component {
                     return <HackerNewsPost post={post} key ={post.id} />
                 case 'giphy':
                     return <GiphyPost post={post} key={post.id} />
+                case 'medium':
+                    return <MediumPost post={post} key={post.guid} />
                 default:
                     return <h1>Error</h1>
             }
@@ -142,7 +163,7 @@ class EasyReader extends Component {
                 <h1 className="easy-reader__global-heading">easy reader</h1>
                 <ul className="easy-reader__nav-container">
                     <li className={`easy-reader__nav ${'reddit' === activeTab ? 'active' : ''}`} onClick={this.fetchRedditPosts}>reddit</li>
-                    <li className={`easy-reader__nav ${'medium' === activeTab ? 'active' : ''}`} onClick={() => this.fetchPosts('medium')}>medium</li>
+                    <li className={`easy-reader__nav ${'medium' === activeTab ? 'active' : ''}`} onClick={this.fetchMediumPosts}>medium</li>
                     <li className={`easy-reader__nav ${'hacker-news' === activeTab ? 'active' : ''}`} onClick={this.fetchHackerNewsPosts}>hacker news</li>
                     <li className={`easy-reader__nav ${'giphy' === activeTab ? 'active' : ''}`} onClick={this.fetchGiphyPosts}>giphy</li>
                     <li className={`easy-reader__nav ${'lifehacker' === activeTab ? 'active' : ''}`} onClick={this.fetchHackerNewsPosts}>lifehacker</li>
