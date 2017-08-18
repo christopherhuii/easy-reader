@@ -3,6 +3,7 @@
 import 'whatwg-fetch'
 import React, {Component} from 'react';
 import debounce from 'lodash.debounce';
+import Media from 'react-media';
 
 import './easy-reader.css';
 import Loader from './js/loader.js';
@@ -172,6 +173,26 @@ class EasyReader extends Component {
         utils.matchHeight(true);
     }
 
+    onMobileDropdownChange = (e) => {
+        switch(e.target.value) {
+            case 'reddit':
+                this.fetchRedditPosts();
+                break;
+            case 'hacker-news':
+                this.fetchHackerNewsPosts();
+                break;
+            case 'giphy':
+                this.fetchGiphyPosts();
+                break;
+            case 'medium':
+                this.fetchMediumPosts();
+                break;
+            case 'techcrunch':
+                this.fetchTechCrunchPosts();
+                break;
+        }
+    }
+
     componentDidMount() {
         this.fetchRedditPosts();
         window.addEventListener('scroll', this.checkScrollPosition);
@@ -192,17 +213,29 @@ class EasyReader extends Component {
 
     render() {
         const {activeTab, isFetchInProgress, posts} = this.state;
-        const postTypeClass = this.state.activeTab === 'giphy' ? 'giphy' : '';
+        const postTypeClass = activeTab === 'giphy' ? 'giphy' : '';
         return (
             <div className="easy-reader__wrapper" id="easy-reader">
                 <h1 className="easy-reader__global-heading">easy reader</h1>
-                <ul className="easy-reader__nav-container">
-                    <li className={`easy-reader__nav ${'reddit' === activeTab ? 'active' : ''}`} onClick={this.fetchRedditPosts}>reddit</li>
-                    <li className={`easy-reader__nav ${'medium' === activeTab ? 'active' : ''}`} onClick={this.fetchMediumPosts}>medium</li>
-                    <li className={`easy-reader__nav ${'hacker-news' === activeTab ? 'active' : ''}`} onClick={this.fetchHackerNewsPosts}>hacker news</li>
-                    <li className={`easy-reader__nav ${'giphy' === activeTab ? 'active' : ''}`} onClick={this.fetchGiphyPosts}>giphy</li>
-                    <li className={`easy-reader__nav ${'techcrunch' === activeTab ? 'active' : ''}`} onClick={this.fetchTechCrunchPosts}>TechCrunch</li>
-                </ul>
+                <Media query="(min-width: 768px)">
+                    {matches => matches ? (
+                        <ul className="easy-reader__nav-container">
+                            <li className={`easy-reader__nav ${'reddit' === activeTab ? 'active' : ''}`} onClick={this.fetchRedditPosts}>reddit</li>
+                            <li className={`easy-reader__nav ${'medium' === activeTab ? 'active' : ''}`} onClick={this.fetchMediumPosts}>medium</li>
+                            <li className={`easy-reader__nav ${'hacker-news' === activeTab ? 'active' : ''}`} onClick={this.fetchHackerNewsPosts}>hacker news</li>
+                            <li className={`easy-reader__nav ${'giphy' === activeTab ? 'active' : ''}`} onClick={this.fetchGiphyPosts}>giphy</li>
+                            <li className={`easy-reader__nav ${'techcrunch' === activeTab ? 'active' : ''}`} onClick={this.fetchTechCrunchPosts}>TechCrunch</li>
+                        </ul>
+                    ): (
+                        <select className="easy-reader__nav-container--mobile" onChange={this.onMobileDropdownChange} value={activeTab || 'reddit'}>
+                            <option value="reddit">reddit</option>
+                            <option value="medium">medium</option>
+                            <option value="hacker-news">hacker news</option>
+                            <option value="giphy">giphy</option>
+                            <option value="techcrunch">techcrunch</option>
+                        </select>
+                    )}
+                </Media>
                 <div className="easy-reader__post-wrapper">
                     <div className={`easy-reader__post-container ${postTypeClass}`} data-match-height-container>
                         {this.renderPosts()}
