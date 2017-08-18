@@ -6,16 +6,19 @@
         position: relative;
     }
 
+    &__post-wrapper {
+        display: flex;
+        align-items: center;
+    }
+
     &__post-image {
         float: left;
+        margin-right: 1em;
         max-width: 320px;
     }
 
     &__post-content {
-        position: absolute;
-        left: calc(320px + 1em); // Width of image and 1em
-        top: 50%;
-        transform: translateY(-50%);
+        margin: 1em 0;
     }
 
     &__post-title {
@@ -50,8 +53,13 @@
 
 @media only screen and (max-width: 767px) {
     .medium {
+        &__post-wrapper {
+            display: block;
+        }
+
         &__post-image {
             float: none;
+            margin: 0;
             max-width: 100%;
         }
 

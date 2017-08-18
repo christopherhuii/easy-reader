@@ -15,7 +15,7 @@ export default function GiphyPost({post}) {
 
     return (
         <div className="medium__post">
-            <a href={post.guid} target="_blank" rel="noopener noreferrer">
+            <a className="medium__post-wrapper" href={post.guid} target="_blank" rel="noopener noreferrer">
                 {utils.parseImage(post.description) ? (
                     <img
                         alt={post.title}
