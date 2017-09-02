@@ -1,0 +1,12 @@
+.post__wrapper {
+  padding: 1em 0;
+  flex-basis: 100%; }
+
+.post__title {
+  font-size: .85em; }
+
+.post__subreddit {
+  color: #8493a3;
+  padding-left: 10px;
+  font-size: .6em;
+  text-decoration: none; }

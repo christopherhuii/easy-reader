@@ -1,0 +1,11 @@
+.hn__post {
+  padding: .5em 0;
+  flex-basis: 100%; }
+
+.hn__title {
+  display: block;
+  font-size: .85em;
+  line-height: .85em; }
+
+.hn__info {
+  font-size: .6em; }

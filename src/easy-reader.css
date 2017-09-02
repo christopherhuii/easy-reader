@@ -1,0 +1,94 @@
+.easy-reader__wrapper {
+  padding-top: 3em; }
+
+.easy-reader__global-heading {
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase; }
+
+.easy-reader__nav-container {
+  display: flex;
+  justify-content: space-around;
+  list-style: none; }
+  .easy-reader__nav-container--mobile {
+    display: block;
+    margin: 1em auto 0;
+    width: 90%; }
+
+.easy-reader__nav {
+  font-size: .95em;
+  letter-spacing: .5px;
+  position: relative;
+  text-transform: uppercase;
+  transition: all 0.3s ease; }
+  .easy-reader__nav:hover {
+    cursor: pointer; }
+  .easy-reader__nav.active {
+    font-weight: 600;
+    transform: scale(1.1); }
+    .easy-reader__nav.active::after {
+      transform: translate(-50%, -148%); }
+  .easy-reader__nav::after {
+    border-bottom: 10px solid #f1f1f1;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    content: '';
+    height: 0;
+    left: 50%;
+    position: absolute;
+    top: calc(110% + 3em);
+    transition: all 0.3s ease;
+    width: 0; }
+
+.easy-reader__post-wrapper {
+  background-color: #f1f1f1;
+  padding: 0 1.5em;
+  position: relative; }
+
+.easy-reader__post-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 3em auto 0;
+  max-width: 1020px;
+  padding: 1em 0; }
+  .easy-reader__post-container.giphy {
+    display: block;
+    line-height: 5;
+    -webkit-column-count: 5;
+    -webkit-column-gap: 0px;
+    -moz-column-count: 5;
+    -moz-column-gap: 0px;
+    column-count: 5;
+    column-gap: 20px;
+    padding: 2em 0; }
+
+.easy-reader__loader {
+  background-color: rgba(255, 255, 255, 0.8);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0; }
+  .easy-reader__loader .loader {
+    left: calc(50% - 5em);
+    position: fixed;
+    top: calc(50% - 5em); }
+
+.easy-reader__end-text {
+  flex-basis: 100%;
+  font-size: .8em;
+  text-align: center; }
+
+.easy-reader__scroll-top-container {
+  bottom: 50px;
+  display: none;
+  position: fixed;
+  right: 50px; }
+  .easy-reader__scroll-top-container.active {
+    display: block; }
+  .easy-reader__scroll-top-container:hover {
+    cursor: pointer; }
+
+.easy-reader__scroll-top {
+  width: 35px; }

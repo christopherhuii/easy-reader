@@ -1,0 +1,43 @@
+.techcrunch__post {
+  display: inline-block;
+  margin: 1.5em 0;
+  flex-basis: 33%; }
+
+.techcrunch__post-wrapper {
+  border: 1px solid #000000;
+  display: block;
+  margin: .5em; }
+
+.techcrunch__post-image {
+  background-position: center;
+  background-size: cover;
+  height: 240px; }
+
+.techcrunch__post-content {
+  margin: 1em; }
+
+.techcrunch__post-title {
+  font-size: .85em;
+  margin: 0; }
+
+.techcrunch__post-categories {
+  margin: .25em 0; }
+
+.techcrunch__post-category + .techcrunch__post-category {
+  margin-left: .5em; }
+
+.techcrunch__post-category {
+  background-color: #cccccc;
+  display: inline-block;
+  font-size: .6em;
+  padding: .25em 1em; }
+
+.techcrunch__post-date, .techcrunch__post-author {
+  font-size: .7em; }
+
+.techcrunch__post-author {
+  padding-left: 1em; }
+
+@media only screen and (max-width: 767px) {
+  .techcrunch__post {
+    flex-basis: 100%; } }
