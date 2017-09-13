@@ -12,6 +12,7 @@
   justify-content: space-around;
   list-style: none; }
   .easy-reader__nav-container--mobile {
+    border: 1px solid #000000;
     display: block;
     margin: 1em auto 0;
     width: 90%; }

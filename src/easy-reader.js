@@ -9,7 +9,6 @@ import './easy-reader.css';
 import Loader from './js/loader.js';
 import RedditPost from './js/reddit-post.js';
 import HackerNewsPost from './js/hn-post.js';
-import GiphyPost from './js/giphy-post.js';
 import MediumPost from './js/medium-post.js';
 import TechCrunchPost from './js/techcrunch-post.js';
 import utils from './js/utils.js';
@@ -63,24 +62,6 @@ class EasyReader extends Component {
                         isFetchInProgress: false,
                         posts
                     });
-                });
-            });
-        });
-    }
-
-    fetchGiphyPosts = () => {
-        this.setState({
-            isFetchInProgress: true
-        }, () => {
-            fetch(`https://api.giphy.com/v1/gifs/trending?api_key=${process.env.REACT_APP_GIPHY}&limit=100`, {
-                method: 'GET'
-            }).then((response) => {
-                return response.json();
-            }).then((data) => {
-                this.setState({
-                    activeTab: 'giphy',
-                    isFetchInProgress: false,
-                    posts: data.data
                 });
             });
         });
@@ -148,8 +129,6 @@ class EasyReader extends Component {
                     return <RedditPost post={post} key={post.data.id}/>
                 case 'hacker-news':
                     return <HackerNewsPost post={post} key ={post.id} />
-                case 'giphy':
-                    return <GiphyPost post={post} key={post.id} />
                 case 'medium':
                     return <MediumPost post={post} key={post.guid} />
                 case 'techcrunch':
@@ -181,14 +160,13 @@ class EasyReader extends Component {
             case 'hacker-news':
                 this.fetchHackerNewsPosts();
                 break;
-            case 'giphy':
-                this.fetchGiphyPosts();
-                break;
             case 'medium':
                 this.fetchMediumPosts();
                 break;
             case 'techcrunch':
                 this.fetchTechCrunchPosts();
+                break;
+            default:
                 break;
         }
     }
@@ -213,31 +191,28 @@ class EasyReader extends Component {
 
     render() {
         const {activeTab, isFetchInProgress, posts} = this.state;
-        const postTypeClass = activeTab === 'giphy' ? 'giphy' : '';
         return (
             <div className="easy-reader__wrapper" id="easy-reader">
                 <h1 className="easy-reader__global-heading">easy reader</h1>
                 <Media query="(min-width: 768px)">
                     {matches => matches ? (
                         <ul className="easy-reader__nav-container">
-                            <li className={`easy-reader__nav ${'reddit' === activeTab ? 'active' : ''}`} onClick={this.fetchRedditPosts}>reddit</li>
-                            <li className={`easy-reader__nav ${'medium' === activeTab ? 'active' : ''}`} onClick={this.fetchMediumPosts}>medium</li>
-                            <li className={`easy-reader__nav ${'hacker-news' === activeTab ? 'active' : ''}`} onClick={this.fetchHackerNewsPosts}>hacker news</li>
-                            <li className={`easy-reader__nav ${'giphy' === activeTab ? 'active' : ''}`} onClick={this.fetchGiphyPosts}>giphy</li>
+                            <li className={`easy-reader__nav ${'reddit' === activeTab ? 'active' : ''}`} onClick={this.fetchRedditPosts}>Reddit</li>
+                            <li className={`easy-reader__nav ${'medium' === activeTab ? 'active' : ''}`} onClick={this.fetchMediumPosts}>Medium</li>
+                            <li className={`easy-reader__nav ${'hacker-news' === activeTab ? 'active' : ''}`} onClick={this.fetchHackerNewsPosts}>Hacker News</li>
                             <li className={`easy-reader__nav ${'techcrunch' === activeTab ? 'active' : ''}`} onClick={this.fetchTechCrunchPosts}>TechCrunch</li>
                         </ul>
                     ): (
                         <select className="easy-reader__nav-container--mobile" onChange={this.onMobileDropdownChange} value={activeTab || 'reddit'}>
-                            <option value="reddit">reddit</option>
-                            <option value="medium">medium</option>
-                            <option value="hacker-news">hacker news</option>
-                            <option value="giphy">giphy</option>
-                            <option value="techcrunch">techcrunch</option>
+                            <option value="reddit">Reddit</option>
+                            <option value="medium">Medium</option>
+                            <option value="hacker-news">Hacker News</option>
+                            <option value="techcrunch">TechCrunch</option>
                         </select>
                     )}
                 </Media>
                 <div className="easy-reader__post-wrapper">
-                    <div className={`easy-reader__post-container ${postTypeClass}`} data-match-height-container>
+                    <div className="easy-reader__post-container" data-match-height-container>
                         {this.renderPosts()}
                         {posts.length > 1 ? (
                             <p className="easy-reader__end-text">the end :)</p>
