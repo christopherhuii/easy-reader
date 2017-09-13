@@ -29,6 +29,16 @@ class EasyReader extends Component {
         }
     }, 150);
 
+    lazyLoadImages = debounce(() => {
+      const imageEls = window.document.querySelectorAll('div[data-img]');
+      imageEls.forEach((el) => {
+        if (window.innerHeight > el.getBoundingClientRect().top) {
+          el.style.backgroundImage = `url(${el.getAttribute('data-img')})`;
+          el.removeAttribute('data-img');
+        }
+      })
+    }, 100);
+
     fetchHackerNewsPosts = () => {
         // Only taking first 25 (for now...)
         this.setState({
@@ -118,6 +128,7 @@ class EasyReader extends Component {
                     isFetchInProgress: false,
                     posts: data.items
                 });
+                this.lazyLoadImages();
             });
         });
     }
@@ -174,6 +185,7 @@ class EasyReader extends Component {
     componentDidMount() {
         this.fetchRedditPosts();
         window.addEventListener('scroll', this.checkScrollPosition);
+        window.addEventListener('scroll', this.lazyLoadImages);
         window.addEventListener('resize', this.resizeMatchHeight);
     }
 
@@ -186,6 +198,7 @@ class EasyReader extends Component {
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.fetchRedditPosts);
+        window.removeEventListener('scroll', this.lazyLoadImages);
         window.removeEventListener('resize', this.resizeMatchHeight);
     }
 

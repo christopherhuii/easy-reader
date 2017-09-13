@@ -19,7 +19,7 @@ export default function TechCrunchPost({post}) {
                 {post.thumbnail ? (
                     <div
                         className="techcrunch__post-image"
-                        style={{backgroundImage: `url(${post.enclosure.link})`}}
+                        data-img={post.enclosure.link}
                     />
                 ): null}
                 <div className="techcrunch__post-content" data-match-height-watch>
